@@ -377,8 +377,12 @@ scheduler(void)
       switchuvm(p);
       p->state = RUNNING;
 
+      const int tickstarts = ticks;
+
       swtch(&(c->scheduler), p->context);
       switchkvm();
+
+      p->ticks += ticks - tickstarts;
 
       // Process is done running for now.
       // It should have changed its p->state before coming back.
