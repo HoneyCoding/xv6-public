@@ -47,7 +47,7 @@ main(int argc, char *argv[]){
    printf(1,"pid:%d, pid:%d, pid:%d\n",pid_chds[0],pid_chds[1],pid_chds[2]);
    printf(1,"tickets:%d, tickets:%d, tickets:%d\n",30,20,10);
 
-   while(time<5000){
+   while(time<1000000){
       if(getpinfo(&st)!=0){
          printf(1,"check failed: getpinfo\n");
          goto Cleanup;
