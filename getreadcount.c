@@ -10,7 +10,6 @@ int main(int argc, char *argv[])
     exit();
   }
 
-  printf(2, "getreadcount: Test Code\n");
-
+  getreadcount();
   exit();
 }
