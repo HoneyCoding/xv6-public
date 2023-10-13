@@ -11,6 +11,7 @@
 #include "file.h"
 
 struct devsw devsw[NDEV];
+int readcount;
 struct {
   struct spinlock lock;
   struct file file[NFILE];
@@ -157,5 +158,5 @@ filewrite(struct file *f, char *addr, int n)
 
 int getreadcount(void)
 {
-  return 6;
+  return readcount;
 }
