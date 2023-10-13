@@ -80,7 +80,7 @@ sys_read(void)
 
 int sys_getreadcount(void)
 {
-  return 0;
+  return getreadcount();
 }
 
 int
