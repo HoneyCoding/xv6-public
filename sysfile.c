@@ -16,6 +16,9 @@
 #include "file.h"
 #include "fcntl.h"
 
+// Use this variable for getreadcount
+int readcount;
+
 // Fetch the nth word-sized system call argument as a file descriptor
 // and return both the descriptor and the corresponding struct file.
 static int
@@ -80,7 +83,7 @@ sys_read(void)
 
 int sys_getreadcount(void)
 {
-  return getreadcount();
+  return readcount;
 }
 
 int
