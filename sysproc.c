@@ -92,6 +92,11 @@ sys_uptime(void)
 
 int sys_settickets(void)
 {
+  int number;
+
+  if (argint(0, &number) < -1 || number < 1)
+    return -1;
+  myproc()->tickets = number;
   return 0;
 }
 
