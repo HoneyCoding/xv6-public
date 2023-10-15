@@ -573,7 +573,20 @@ procdump(void)
 }
 
 void
-getpinfo(struct pstat *)
+getpinfo(struct pstat * ps)
 {
-
+  struct proc *p;
+  int i;
+  // Loop over process table looking for process to run.
+  acquire(&ptable.lock);
+  for (i = 0; i < NPROC; i++)
+  {
+    p = &ptable.proc[i];
+    if (p->state != RUNNABLE) continue;
+    ps->pid[i] = p->pid;
+    ps->inuse[i] = p->inuse;
+    ps->tickets[i] = p->tickets;
+    ps->ticks[i] = p->ticks;
+  }
+  release(&ptable.lock);
 }
