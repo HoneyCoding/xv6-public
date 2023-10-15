@@ -6,6 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "pstat.h"
 #define PHI 0x9e3779b9
 
 struct {
@@ -569,4 +570,10 @@ procdump(void)
     }
     cprintf("\n");
   }
+}
+
+void
+getpinfo(struct pstat *)
+{
+
 }
