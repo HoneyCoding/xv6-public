@@ -404,6 +404,13 @@ rrscheduler(void)
   }
 }
 
+// Lottery scheduler.
+void
+ltscheduler(void)
+{
+
+}
+
 // Enter scheduler.  Must hold only ptable.lock
 // and have changed proc->state. Saves and restores
 // intena because intena is a property of this
