@@ -408,7 +408,10 @@ rrscheduler(void)
 void
 ltscheduler(void)
 {
-
+  for(;;)
+  {
+    
+  }
 }
 
 // Enter scheduler.  Must hold only ptable.lock
