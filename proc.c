@@ -361,7 +361,7 @@ wait(void)
 void
 scheduler(void)
 {
-  rrscheduler();
+  ltscheduler();
 }
 
 // Round Robin scheduler.
