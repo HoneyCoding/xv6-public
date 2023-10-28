@@ -413,6 +413,8 @@ ltscheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   struct rtcdate *r = NULL;
+  int counter = 0;
+  int winner = 0;
 
   c->proc = 0;
   // Read current time
