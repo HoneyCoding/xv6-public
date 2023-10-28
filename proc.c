@@ -417,7 +417,7 @@ ltscheduler(void)
 
   c->proc = 0;
   // Set seed value using current second.
-  srand(r->second);
+  srand(1024);
 
   for (;;)
   {
