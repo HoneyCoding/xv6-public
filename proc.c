@@ -249,12 +249,12 @@ fork(void)
   safestrcpy(np->name, curproc->name, sizeof(curproc->name));
 
   pid = np->pid;
-  np->tickets = curproc->tickets;
-  np->ticks = 0;
 
   acquire(&ptable.lock);
 
   np->state = RUNNABLE;
+  np->tickets = curproc->tickets;
+  np->ticks = 0;
 
   release(&ptable.lock);
 
@@ -464,8 +464,10 @@ ltscheduler(void)
 int totaltickets() {
   struct proc *p;
   int total = 0;
+  acquire(&ptable.lock);
   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
-    if(p->state == RUNNABLE) total += p->tickets;
+    total += p->tickets;
+  release(&ptable.lock);
   return total;
 }
 
