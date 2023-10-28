@@ -456,6 +456,14 @@ ltscheduler(void)
   }
 }
 
+int totaltickets() {
+  struct proc *p;
+  int total = 0;
+  for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+    if(p->state == RUNNABLE) total += p->tickets;
+  return total;
+}
+
 // Enter scheduler.  Must hold only ptable.lock
 // and have changed proc->state. Saves and restores
 // intena because intena is a property of this
