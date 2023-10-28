@@ -116,6 +116,7 @@ void            procdump(void);
 void            scheduler(void) __attribute__((noreturn));
 void            rrscheduler(void) __attribute__((noreturn));
 void            ltscheduler(void) __attribute__((noreturn));
+int             totaltickets(void);
 void            sched(void);
 void            setproc(struct proc*);
 void            sleep(void*, struct spinlock*);
