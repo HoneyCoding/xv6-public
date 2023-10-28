@@ -1,5 +1,7 @@
+#include <stddef.h>
 #include "types.h"
 #include "defs.h"
+#include "date.h"
 #include "param.h"
 #include "memlayout.h"
 #include "mmu.h"
@@ -410,7 +412,7 @@ ltscheduler(void)
 {
   struct proc *p;
   struct cpu *c = mycpu();
-  struct rtcdate *r;
+  struct rtcdate *r = NULL;
 
   c->proc = 0;
   // Read current time
