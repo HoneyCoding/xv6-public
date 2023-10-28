@@ -427,11 +427,17 @@ ltscheduler(void)
     // Enable interrupts on this processor.
     sti();
 
+    counter = 0;
+    winner = rand() % totaltickets();
+
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
     {
       if (p->state != RUNNABLE)
+        continue;
+      counter += p->tickets;
+      if (counter < winner)
         continue;
 
       // Switch to chosen process.  It is the process's job
@@ -451,6 +457,7 @@ ltscheduler(void)
       // Process is done running for now.
       // It should have changed its p->state before coming back.
       c->proc = 0;
+      break;
     }
     release(&ptable.lock);
   }
