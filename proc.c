@@ -661,7 +661,7 @@ getpinfo(struct pstat * ps)
   for (i = 0; i < NPROC; i++)
   {
     p = &ptable.proc[i];
-    if (p->state != RUNNABLE) continue;
+    if (p->state == UNUSED) continue;
     ps->pid[i] = p->pid;
     ps->inuse[i] = p->inuse;
     ps->tickets[i] = p->tickets;
