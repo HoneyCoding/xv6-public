@@ -185,8 +185,8 @@ UPROGS=\
 	_test\
 	_test_lottery\
 
-fs.img: mkfs README $(UPROGS)
-	./mkfs fs.img README $(UPROGS)
+fs.img: mkfs $(UPROGS)
+	./mkfs fs.img $(UPROGS)
 
 -include *.d
 
