@@ -3,7 +3,7 @@
 ## Phase1. Intro
 - This first project is just a warmup, and thus relatively light on work.
 - The goal of the project is simple: to add a system call to xv6.
-    - Your system call, getreadcount (), simply returns how many times that the read() system call has been called by user processes since the time that the kernel was booted.
+    - Your system call, getreadcount(), simply returns how many times that the read() system call has been called by user processes since the time that the kernel was booted.
 
 ## Phase2. scheduling-xv6-lottery
 - Objectives
