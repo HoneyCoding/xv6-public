@@ -183,7 +183,7 @@ UPROGS=\
 	_getreadcount\
 	_zombie\
 	_test\
-	#_test_lottery\
+	_test_lottery\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
