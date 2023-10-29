@@ -413,12 +413,14 @@ ltscheduler(void)
 {
   struct proc *p;
   struct cpu *c = mycpu();
+  struct rtcdate r;
   int counter = 0;
   int winner = 0;
 
   c->proc = 0;
+  cmostime(&r);
   // Set seed value using current second.
-  srand(1024);
+  srand(r.second);
 
   for (;;)
   {
