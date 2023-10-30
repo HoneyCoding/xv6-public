@@ -416,6 +416,7 @@ ltscheduler(void)
   struct rtcdate r;
   int counter = 0;
   int winner = 0;
+  int total_tickets;
 
   c->proc = 0;
   cmostime(&r);
@@ -428,7 +429,12 @@ ltscheduler(void)
     sti();
 
     counter = 0;
-    winner = rand() % totaltickets();
+    total_tickets = totaltickets();
+    winner = rand();
+    if(total_tickets > 0)
+      winner %= totaltickets();
+    else
+      winner = 0;
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
