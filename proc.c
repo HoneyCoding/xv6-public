@@ -430,11 +430,9 @@ ltscheduler(void)
 
     counter = 0;
     total_tickets = totaltickets();
-    winner = rand();
-    if(total_tickets > 0)
-      winner %= totaltickets();
-    else
-      winner = 0;
+    if(0 == total_tickets)
+      continue;
+    winner = rand() % total_tickets;
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
