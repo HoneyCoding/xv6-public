@@ -385,6 +385,80 @@ copyout(pde_t *pgdir, uint va, void *p, uint len)
   return 0;
 }
 
+// Change protection bits of the page range starting at addr and of len pages to read only
+int
+mprotect(void *addr, int len)
+{
+  struct proc *curproc = myproc();
+  // If len is less than or equal to zero, return -1
+  if(len <= 0)
+    return -1;
+
+  int end_addr = (int)addr + len * PGSIZE; // last address of page range
+  // If addr is not the current address space, return -1
+  if(end_addr > curproc->sz)
+    return -1;
+
+  // If addr is not page aligned, return -1
+  if(((int)addr) % PGSIZE != 0)
+    return -1;
+
+  pte_t *pte;   // Page table entry pointer
+  int cur_addr; // current address
+  for(cur_addr = ((int)addr); cur_addr < end_addr; cur_addr += PGSIZE)
+  {
+    pte = walkpgdir(curproc->pgdir, (void *)cur_addr, 0);
+    if(pte)
+    {
+      *pte &= (~PTE_W); // make writable bit to 0
+    }
+    else
+    {
+      return -1;
+    }
+  }
+
+  lcr3(V2P(curproc->pgdir)); // switch to current process's page table
+  return 0;
+}
+
+// Change protection bits of the page to writable
+int
+munprotect(void *addr, int len)
+{
+  struct proc *curproc = myproc();
+  // If len is less than or equal to zero, return -1
+  if(len <= 0)
+    return -1;
+
+  int end_addr = (int)addr + len * PGSIZE; // last address of page range
+  // If addr is not the current address space, return -1
+  if(end_addr > curproc->sz)
+    return -1;
+
+  // If addr is not page aligned, return -1
+  if(((int)addr) % PGSIZE != 0)
+    return -1;
+
+  pte_t *pte;   // Page table entry pointer
+  int cur_addr; // current address
+  for(cur_addr = ((int)addr); cur_addr < end_addr; cur_addr += PGSIZE)
+  {
+    pte = walkpgdir(curproc->pgdir, (void *)cur_addr, 0);
+    if(pte)
+    {
+      *pte |= PTE_W; // make writable bit to 1
+    }
+    else
+    {
+      return -1;
+    }
+  }
+
+  lcr3(V2P(curproc->pgdir)); // switch to current process's page table
+  return 0;
+}
+
 //PAGEBREAK!
 // Blank page.
 //PAGEBREAK!
