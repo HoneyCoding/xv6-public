@@ -394,7 +394,7 @@ mprotect(void *addr, int len)
   if(len <= 0)
     return -1;
 
-  int end_addr = (int)addr + len * PGSIZE; // last address of page range
+  int end_addr = (int)addr + len * PGSIZE; // next of last address of page range
   // If addr is not the current address space, return -1
   if(end_addr > curproc->sz)
     return -1;
@@ -431,7 +431,7 @@ munprotect(void *addr, int len)
   if(len <= 0)
     return -1;
 
-  int end_addr = (int)addr + len * PGSIZE; // last address of page range
+  int end_addr = (int)addr + len * PGSIZE; // next of last address of page range
   // If addr is not the current address space, return -1
   if(end_addr > curproc->sz)
     return -1;
