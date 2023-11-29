@@ -93,11 +93,25 @@ sys_uptime(void)
 int
 sys_clone(void)
 {
+  int fcn, arg1, arg2, stack;
+  if (argint(0, &fcn) < 0)
+    return -1;
+  if (argint(1, &arg1) < 0)
+    return -1;
+  if (argint(2, &arg2) < 0)
+    return -1;
+  if (argint(3, &stack) < 0)
+    return -1;
+
   return -1;
 }
 
 int
 sys_join(void)
 {
+  int stack;
+  if (argint(0, &stack) < 0)
+    return -1;
+
   return -1;
 }
