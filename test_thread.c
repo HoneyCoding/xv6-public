@@ -1,7 +1,7 @@
 #include "types.h"
 #include "stat.h"
-#include "user.h"
 #include "fcntl.h"
+#include "threadlib.h"
 #define SLEEP_TIME 100
 
 lock_t* lk;
