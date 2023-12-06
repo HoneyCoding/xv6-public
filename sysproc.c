@@ -113,5 +113,5 @@ sys_join(void)
   if (argint(0, &stack) < 0)
     return -1;
 
-  return -1;
+  return join((void **)stack);
 }
