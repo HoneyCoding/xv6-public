@@ -619,7 +619,7 @@ int join(void **stack)
         p->parent = 0;
         p->name[0] = 0;
         p->killed = 0;
-        *((int *)((int *)stack)) = p->stack;
+        *stack = p->stack;
         release(&ptable.lock);
         return pid;
       }
