@@ -554,6 +554,7 @@ int clone(void *fcn, void *arg1, void *arg2, void *stack)
   np->sz = curproc->sz;
   np->parent = curproc;
   *np->tf = *curproc->tf;
+  np->stack = stack;
 
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
