@@ -588,3 +588,7 @@ int clone(void *fcn, void *arg1, void *arg2, void *stack)
 
   return pid;
 }
+
+int join(void **stack) {
+  
+}
