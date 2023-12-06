@@ -539,6 +539,8 @@ int clone(void *fcn, void *arg1, void *arg2, void *stack)
   int i, pid;
   struct proc *np;
   struct proc *curproc = myproc();
+  int *clonearg1, *clonearg2;
+  int *fakeret;
 
   // Allocate process.
   if ((np = allocproc()) == 0)
@@ -546,14 +548,9 @@ int clone(void *fcn, void *arg1, void *arg2, void *stack)
     return -1;
   }
 
-  // Copy process state from proc.
-  if ((np->pgdir = copyuvm(curproc->pgdir, curproc->sz)) == 0)
-  {
-    kfree(np->kstack);
-    np->kstack = 0;
-    np->state = UNUSED;
-    return -1;
-  }
+  // Share process state from proc.
+  np->pgdir = curproc->pgdir;
+  np->state = UNUSED;
   np->sz = curproc->sz;
   np->parent = curproc;
   *np->tf = *curproc->tf;
@@ -561,9 +558,22 @@ int clone(void *fcn, void *arg1, void *arg2, void *stack)
   // Clear %eax so that fork returns 0 in the child.
   np->tf->eax = 0;
 
-  for (i = 0; i < NOFILE; i++)
-    if (curproc->ofile[i])
-      np->ofile[i] = filedup(curproc->ofile[i]);
+  np->tf->eip = (uint)fcn;
+
+  fakeret = ((int)stack) + PGSIZE - 3 * sizeof(int*);
+  *fakeret = 0xFFFFFFFF; // 0xFFFFFFF is written in project pdf
+
+  clonearg1 = ((int)stack) + PGSIZE - 2 * sizeof(int *);
+  *clonearg1 = (int)arg1;
+
+  clonearg2 = ((int)stack) + PGSIZE - sizeof(int *);
+  *clonearg2 = (int)arg2;
+
+  np->tf->esp = ((int)stack) + PGSIZE;
+  np->tf->ebp = fakeret;
+
+  for (i = 0; i < NOFILE; i++) if (curproc->ofile[i])
+    np->ofile[i] = filedup(curproc->ofile[i]);
   np->cwd = idup(curproc->cwd);
 
   safestrcpy(np->name, curproc->name, sizeof(curproc->name));
