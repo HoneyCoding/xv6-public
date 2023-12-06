@@ -567,11 +567,11 @@ int clone(void *fcn, void *arg1, void *arg2, void *stack)
   clonearg1 = (int *)(((int)stack) + PGSIZE - 2 * sizeof(int *));
   *clonearg1 = (int)arg1;
 
-  clonearg2 = (int *)(((int)stack) + PGSIZE - sizeof(int *));
+  clonearg2 = (int *)(((int)stack) + PGSIZE - 1 * sizeof(int *));
   *clonearg2 = (int)arg2;
 
-  np->tf->esp = ((int)stack) + PGSIZE;
-  np->tf->ebp = (uint)fakeret;
+  np->tf->esp = (uint)fakeret;
+  np->tf->ebp = np->tf->esp;
 
   for (i = 0; i < NOFILE; i++) if (curproc->ofile[i])
     np->ofile[i] = filedup(curproc->ofile[i]);
@@ -613,13 +613,16 @@ int join(void **stack)
 
       if (p->state == ZOMBIE)
       {
+        *stack = p->stack;
+        p->stack = 0;
         pid = p->pid;
+        kfree(p->kstack);
+        p->kstack = 0;
         p->state = UNUSED;
         p->pid = 0;
         p->parent = 0;
         p->name[0] = 0;
         p->killed = 0;
-        *stack = p->stack;
         release(&ptable.lock);
         return pid;
       }
