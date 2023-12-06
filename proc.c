@@ -560,17 +560,17 @@ int clone(void *fcn, void *arg1, void *arg2, void *stack)
 
   np->tf->eip = (uint)fcn;
 
-  fakeret = ((int)stack) + PGSIZE - 3 * sizeof(int*);
+  fakeret = (int *)(((int)stack) + PGSIZE - 3 * sizeof(int*));
   *fakeret = 0xFFFFFFFF; // 0xFFFFFFF is written in project pdf
 
-  clonearg1 = ((int)stack) + PGSIZE - 2 * sizeof(int *);
+  clonearg1 = (int *)(((int)stack) + PGSIZE - 2 * sizeof(int *));
   *clonearg1 = (int)arg1;
 
-  clonearg2 = ((int)stack) + PGSIZE - sizeof(int *);
+  clonearg2 = (int *)(((int)stack) + PGSIZE - sizeof(int *));
   *clonearg2 = (int)arg2;
 
   np->tf->esp = ((int)stack) + PGSIZE;
-  np->tf->ebp = fakeret;
+  np->tf->ebp = (uint)fakeret;
 
   for (i = 0; i < NOFILE; i++) if (curproc->ofile[i])
     np->ofile[i] = filedup(curproc->ofile[i]);
@@ -590,5 +590,5 @@ int clone(void *fcn, void *arg1, void *arg2, void *stack)
 }
 
 int join(void **stack) {
-  
+  return -1;
 }
