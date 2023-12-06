@@ -590,6 +590,48 @@ int clone(void *fcn, void *arg1, void *arg2, void *stack)
   return pid;
 }
 
-int join(void **stack) {
-  return -1;
+int join(void **stack)
+{
+  struct proc *curproc = myproc();
+  struct proc *p;
+  int havethreads, pid;
+
+  acquire(&ptable.lock);
+  while (1)
+  {
+    // flag: check haveThreads
+    havethreads = 0;
+    for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+    {
+      // check p's parent is curproc
+      if (p->parent != curproc)
+        continue;
+      // check p is sharing address with curproc
+      if (p->pgdir != curproc->pgdir)
+        continue;
+      havethreads = 1;
+
+      if (p->state == ZOMBIE)
+      {
+        pid = p->pid;
+        p->state = UNUSED;
+        p->pid = 0;
+        p->parent = 0;
+        p->name[0] = 0;
+        p->killed = 0;
+        *((int *)((int *)stack)) = p->stack;
+        release(&ptable.lock);
+        return pid;
+      }
+    }
+
+    // if we don't have any threads
+    if (!havethreads || curproc->killed)
+    {
+      release(&ptable.lock);
+      return -1;
+    }
+
+    sleep(curproc, &ptable.lock);
+  }
 }
