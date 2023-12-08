@@ -571,7 +571,7 @@ int clone(void *fcn, void *arg1, void *arg2, void *stack)
   *clonearg2 = (int)arg2;
 
   np->tf->esp = (uint)fakeret;
-  np->tf->ebp = np->tf->esp;
+  np->tf->ebp = (uint)(((int)stack) + PGSIZE);
 
   for (i = 0; i < NOFILE; i++) if (curproc->ofile[i])
     np->ofile[i] = filedup(curproc->ofile[i]);
